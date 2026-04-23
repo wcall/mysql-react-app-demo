@@ -141,6 +141,8 @@ docker compose --env-file ../.env down -v
 ```
 mysql-react-app-demo/
 ├── .env                        # Credentials (not committed)
+├── .env.example                # Environment variable template
+├── README.md                   # This file
 └── mysql/
     ├── compose.yaml            # Docker Compose config
     ├── my.cnf                  # MySQL 8 config (Performance Schema enabled)
@@ -150,9 +152,8 @@ mysql-react-app-demo/
     ├── app/
     │   ├── backend/            # Express.js API
     │   └── frontend/           # React + Vite SPA
-    ├── scripts/
-    │   └── mysql-loadgen-with-gck6.js  # k6 load test script
-    └── README.md
+    └── scripts/
+        └── mysql-loadgen-with-gck6.js  # k6 load test script
 ```
 
 ---
