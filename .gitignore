@@ -1,0 +1,44 @@
+# Environment variables with sensitive credentials
+*.env
+*.env.*
+!.env.example
+setenv.sh
+
+# Terraform variables with sensitive credentials
+terraform.tfvars
+
+# Node
+node_modules/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+!*.tfstate.example
+
+# Docker volumes and data
+postgres_data/
+
+# Logs
+*.log
+*.log.*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Claude Code
+CLAUDE.md
+.claude/
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
