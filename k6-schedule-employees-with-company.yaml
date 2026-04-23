@@ -1,0 +1,7 @@
+# k6 Cloud schedule for GET /api/employees/with-company load test.
+# load-test-id: 1206088  schedule-id: 35875
+# Applied via: gcx k6 schedules create --load-test-id 1206088 -f k6-schedule-employees-with-company.yaml
+starts: "2026-04-23T12:00:00Z"
+recurrence_rule:
+  frequency: HOURLY
+  interval: 6

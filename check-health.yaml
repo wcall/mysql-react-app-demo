@@ -1,0 +1,26 @@
+# IMPORTANT: All available probes are public (Paris, Tokyo, Frankfurt, etc.).
+# Your app runs locally via Docker Compose and cannot be reached by public probes.
+# Before deploying this check, expose the backend with a public URL (ngrok, Tailscale, cloud deploy)
+# and replace TARGET_URL below.
+#
+# Example with ngrok: ngrok http 3001
+# Then set target: https://<your-tunnel>.ngrok.io/api/health
+apiVersion: syntheticmonitoring.ext.grafana.app/v1alpha1
+kind: Check
+metadata:
+  name: health-http
+spec:
+  job: "mysql-react-app-health"
+  target: "TARGET_URL/api/health"
+  frequency: 30000   # 30 seconds — critical endpoint
+  timeout: 10000
+  enabled: true
+  basicMetricsOnly: false
+  alertSensitivity: medium
+  probes: []         # empty = all public probes
+  settings:
+    http:
+      ipVersion: V4
+      noFollowRedirects: false
+      validStatusCodes:
+        - 200

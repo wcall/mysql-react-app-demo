@@ -1,0 +1,22 @@
+apiVersion: syntheticmonitoring.ext.grafana.app/v1alpha1
+kind: Check
+metadata:
+  name: "mysql-react-app-stack-health-1760799"
+spec:
+  job: "mysql-react-app-stack-health"
+  target: "https://weichincall.grafana.net/api/health"
+  frequency: 60000   # 60 seconds — temporary placeholder while app is local
+  timeout: 10000
+  enabled: true
+  basicMetricsOnly: false
+  alertSensitivity: low
+  probes:
+    - Oregon
+    - Frankfurt
+    - Tokyo
+  settings:
+    http:
+      ipVersion: V4
+      noFollowRedirects: false
+      validStatusCodes:
+        - 200

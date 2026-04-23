@@ -43,6 +43,27 @@ services:
     networks:
       - db-o11y-network
 
+  alloy:
+    image: grafana/alloy:latest
+    container_name: db-o11y-alloy
+    ports:
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP
+      - "12345:12345" # Alloy UI
+    volumes:
+      - ./alloy-config.alloy:/etc/alloy/config.alloy:ro
+    environment:
+      GRAFANA_CLOUD_API_KEY: ${GRAFANA_CLOUD_API_KEY}
+      GCLOUD_PROMETHEUS_URL: ${GCLOUD_PROMETHEUS_URL}
+      GCLOUD_PROMETHEUS_USERNAME: ${GCLOUD_PROMETHEUS_USERNAME}
+      GCLOUD_LOKI_URL: ${GCLOUD_LOKI_URL}
+      GCLOUD_LOKI_USERNAME: ${GCLOUD_LOKI_USERNAME}
+      GCLOUD_TEMPO_ENDPOINT: ${GCLOUD_TEMPO_ENDPOINT}
+      GCLOUD_TEMPO_USERNAME: ${GCLOUD_TEMPO_USERNAME}
+    command: ["run", "--server.http.listen-addr=0.0.0.0:12345", "/etc/alloy/config.alloy"]
+    networks:
+      - db-o11y-network
+
   backend:
     build: ./app/backend
     container_name: db-o11y-backend
@@ -55,9 +76,14 @@ services:
       DB_USER: root
       DB_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       PORT: 3001
+      OTEL_SERVICE_NAME: mysql-react-backend
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://alloy:4317
+      OTEL_RESOURCE_ATTRIBUTES: service.namespace=mysql-react-app-demo
     depends_on:
       mysql:
         condition: service_healthy
+      alloy:
+        condition: service_started
     networks:
       - db-o11y-network
 
@@ -68,6 +94,8 @@ services:
       - "3000:3000"
     environment:
       BACKEND_URL: http://backend:3001
+      VITE_FARO_APP_KEY: ${VITE_FARO_APP_KEY:-}
+      VITE_FARO_ENDPOINT: ${VITE_FARO_ENDPOINT:-}
     depends_on:
       - backend
     networks:

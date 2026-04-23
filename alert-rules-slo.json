@@ -1,0 +1,434 @@
+[
+  {
+    "title": "List Companies — Fast Burn",
+    "condition": "C",
+    "data": [
+      {
+        "refId": "A",
+        "queryType": "",
+        "relativeTimeRange": { "from": 600, "to": 0 },
+        "datasourceUid": "grafanacloud-prom",
+        "model": {
+          "expr": "1 - grafana_slo_sli_5m{grafana_slo_uuid=\"slolistcompanies\"}",
+          "instant": true,
+          "refId": "A"
+        }
+      },
+      {
+        "refId": "B",
+        "queryType": "",
+        "relativeTimeRange": { "from": 600, "to": 0 },
+        "datasourceUid": "grafanacloud-prom",
+        "model": {
+          "expr": "1 - grafana_slo_sli_1h{grafana_slo_uuid=\"slolistcompanies\"}",
+          "instant": true,
+          "refId": "B"
+        }
+      },
+      {
+        "refId": "C",
+        "datasourceUid": "__expr__",
+        "model": {
+          "type": "math",
+          "expression": "$A > 0.0144 && $B > 0.0144",
+          "refId": "C"
+        }
+      }
+    ],
+    "intervalSeconds": 60,
+    "for": "2m",
+    "labels": {
+      "severity": "critical",
+      "team": "mysql-react-app-demo",
+      "journey": "list-companies",
+      "burn_rate": "fast"
+    },
+    "annotations": {
+      "summary": "List Companies SLO fast burn — error budget depleting rapidly",
+      "description": "The List Companies journey is burning error budget at 14.4x the allowed rate. 2% of the 28-day budget will be exhausted in 1 hour."
+    },
+    "folderUID": "b1ecdba7-e861-42b1-9180-3ecb646ee76c",
+    "ruleGroup": "mysql-react-slo-alerts",
+    "noDataState": "OK",
+    "execErrState": "Error",
+    "isPaused": false
+  },
+  {
+    "title": "List Companies — Slow Burn",
+    "condition": "C",
+    "data": [
+      {
+        "refId": "A",
+        "queryType": "",
+        "relativeTimeRange": { "from": 3600, "to": 0 },
+        "datasourceUid": "grafanacloud-prom",
+        "model": {
+          "expr": "1 - grafana_slo_sli_30m{grafana_slo_uuid=\"slolistcompanies\"}",
+          "instant": true,
+          "refId": "A"
+        }
+      },
+      {
+        "refId": "B",
+        "queryType": "",
+        "relativeTimeRange": { "from": 3600, "to": 0 },
+        "datasourceUid": "grafanacloud-prom",
+        "model": {
+          "expr": "1 - grafana_slo_sli_6h{grafana_slo_uuid=\"slolistcompanies\"}",
+          "instant": true,
+          "refId": "B"
+        }
+      },
+      {
+        "refId": "C",
+        "datasourceUid": "__expr__",
+        "model": {
+          "type": "math",
+          "expression": "$A > 0.006 && $B > 0.006",
+          "refId": "C"
+        }
+      }
+    ],
+    "intervalSeconds": 60,
+    "for": "60m",
+    "labels": {
+      "severity": "warning",
+      "team": "mysql-react-app-demo",
+      "journey": "list-companies",
+      "burn_rate": "slow"
+    },
+    "annotations": {
+      "summary": "List Companies SLO slow burn — error budget depleting",
+      "description": "The List Companies journey has a sustained elevated error rate at 6x the allowed burn rate."
+    },
+    "folderUID": "b1ecdba7-e861-42b1-9180-3ecb646ee76c",
+    "ruleGroup": "mysql-react-slo-alerts",
+    "noDataState": "OK",
+    "execErrState": "Error",
+    "isPaused": false
+  },
+  {
+    "title": "Create Company — Fast Burn",
+    "condition": "C",
+    "data": [
+      {
+        "refId": "A",
+        "queryType": "",
+        "relativeTimeRange": { "from": 600, "to": 0 },
+        "datasourceUid": "grafanacloud-prom",
+        "model": {
+          "expr": "1 - grafana_slo_sli_5m{grafana_slo_uuid=\"slocreatecompany\"}",
+          "instant": true,
+          "refId": "A"
+        }
+      },
+      {
+        "refId": "B",
+        "queryType": "",
+        "relativeTimeRange": { "from": 600, "to": 0 },
+        "datasourceUid": "grafanacloud-prom",
+        "model": {
+          "expr": "1 - grafana_slo_sli_1h{grafana_slo_uuid=\"slocreatecompany\"}",
+          "instant": true,
+          "refId": "B"
+        }
+      },
+      {
+        "refId": "C",
+        "datasourceUid": "__expr__",
+        "model": {
+          "type": "math",
+          "expression": "$A > 0.0144 && $B > 0.0144",
+          "refId": "C"
+        }
+      }
+    ],
+    "intervalSeconds": 60,
+    "for": "2m",
+    "labels": {
+      "severity": "critical",
+      "team": "mysql-react-app-demo",
+      "journey": "create-company",
+      "burn_rate": "fast"
+    },
+    "annotations": {
+      "summary": "Create Company SLO fast burn — error budget depleting rapidly",
+      "description": "The Create Company journey is burning error budget at 14.4x the allowed rate. 2% of the 28-day budget will be exhausted in 1 hour."
+    },
+    "folderUID": "b1ecdba7-e861-42b1-9180-3ecb646ee76c",
+    "ruleGroup": "mysql-react-slo-alerts",
+    "noDataState": "OK",
+    "execErrState": "Error",
+    "isPaused": false
+  },
+  {
+    "title": "Create Company — Slow Burn",
+    "condition": "C",
+    "data": [
+      {
+        "refId": "A",
+        "queryType": "",
+        "relativeTimeRange": { "from": 3600, "to": 0 },
+        "datasourceUid": "grafanacloud-prom",
+        "model": {
+          "expr": "1 - grafana_slo_sli_30m{grafana_slo_uuid=\"slocreatecompany\"}",
+          "instant": true,
+          "refId": "A"
+        }
+      },
+      {
+        "refId": "B",
+        "queryType": "",
+        "relativeTimeRange": { "from": 3600, "to": 0 },
+        "datasourceUid": "grafanacloud-prom",
+        "model": {
+          "expr": "1 - grafana_slo_sli_6h{grafana_slo_uuid=\"slocreatecompany\"}",
+          "instant": true,
+          "refId": "B"
+        }
+      },
+      {
+        "refId": "C",
+        "datasourceUid": "__expr__",
+        "model": {
+          "type": "math",
+          "expression": "$A > 0.006 && $B > 0.006",
+          "refId": "C"
+        }
+      }
+    ],
+    "intervalSeconds": 60,
+    "for": "60m",
+    "labels": {
+      "severity": "warning",
+      "team": "mysql-react-app-demo",
+      "journey": "create-company",
+      "burn_rate": "slow"
+    },
+    "annotations": {
+      "summary": "Create Company SLO slow burn — error budget depleting",
+      "description": "The Create Company journey has a sustained elevated error rate at 6x the allowed burn rate."
+    },
+    "folderUID": "b1ecdba7-e861-42b1-9180-3ecb646ee76c",
+    "ruleGroup": "mysql-react-slo-alerts",
+    "noDataState": "OK",
+    "execErrState": "Error",
+    "isPaused": false
+  },
+  {
+    "title": "List Employees — Fast Burn",
+    "condition": "C",
+    "data": [
+      {
+        "refId": "A",
+        "queryType": "",
+        "relativeTimeRange": { "from": 600, "to": 0 },
+        "datasourceUid": "grafanacloud-prom",
+        "model": {
+          "expr": "1 - grafana_slo_sli_5m{grafana_slo_uuid=\"slolistemployees\"}",
+          "instant": true,
+          "refId": "A"
+        }
+      },
+      {
+        "refId": "B",
+        "queryType": "",
+        "relativeTimeRange": { "from": 600, "to": 0 },
+        "datasourceUid": "grafanacloud-prom",
+        "model": {
+          "expr": "1 - grafana_slo_sli_1h{grafana_slo_uuid=\"slolistemployees\"}",
+          "instant": true,
+          "refId": "B"
+        }
+      },
+      {
+        "refId": "C",
+        "datasourceUid": "__expr__",
+        "model": {
+          "type": "math",
+          "expression": "$A > 0.0144 && $B > 0.0144",
+          "refId": "C"
+        }
+      }
+    ],
+    "intervalSeconds": 60,
+    "for": "2m",
+    "labels": {
+      "severity": "critical",
+      "team": "mysql-react-app-demo",
+      "journey": "list-employees",
+      "burn_rate": "fast"
+    },
+    "annotations": {
+      "summary": "List Employees SLO fast burn — error budget depleting rapidly",
+      "description": "The List Employees journey is burning error budget at 14.4x the allowed rate. 2% of the 28-day budget will be exhausted in 1 hour."
+    },
+    "folderUID": "b1ecdba7-e861-42b1-9180-3ecb646ee76c",
+    "ruleGroup": "mysql-react-slo-alerts",
+    "noDataState": "OK",
+    "execErrState": "Error",
+    "isPaused": false
+  },
+  {
+    "title": "List Employees — Slow Burn",
+    "condition": "C",
+    "data": [
+      {
+        "refId": "A",
+        "queryType": "",
+        "relativeTimeRange": { "from": 3600, "to": 0 },
+        "datasourceUid": "grafanacloud-prom",
+        "model": {
+          "expr": "1 - grafana_slo_sli_30m{grafana_slo_uuid=\"slolistemployees\"}",
+          "instant": true,
+          "refId": "A"
+        }
+      },
+      {
+        "refId": "B",
+        "queryType": "",
+        "relativeTimeRange": { "from": 3600, "to": 0 },
+        "datasourceUid": "grafanacloud-prom",
+        "model": {
+          "expr": "1 - grafana_slo_sli_6h{grafana_slo_uuid=\"slolistemployees\"}",
+          "instant": true,
+          "refId": "B"
+        }
+      },
+      {
+        "refId": "C",
+        "datasourceUid": "__expr__",
+        "model": {
+          "type": "math",
+          "expression": "$A > 0.006 && $B > 0.006",
+          "refId": "C"
+        }
+      }
+    ],
+    "intervalSeconds": 60,
+    "for": "60m",
+    "labels": {
+      "severity": "warning",
+      "team": "mysql-react-app-demo",
+      "journey": "list-employees",
+      "burn_rate": "slow"
+    },
+    "annotations": {
+      "summary": "List Employees SLO slow burn — error budget depleting",
+      "description": "The List Employees journey has a sustained elevated error rate at 6x the allowed burn rate."
+    },
+    "folderUID": "b1ecdba7-e861-42b1-9180-3ecb646ee76c",
+    "ruleGroup": "mysql-react-slo-alerts",
+    "noDataState": "OK",
+    "execErrState": "Error",
+    "isPaused": false
+  },
+  {
+    "title": "Create Employee — Fast Burn",
+    "condition": "C",
+    "data": [
+      {
+        "refId": "A",
+        "queryType": "",
+        "relativeTimeRange": { "from": 600, "to": 0 },
+        "datasourceUid": "grafanacloud-prom",
+        "model": {
+          "expr": "1 - grafana_slo_sli_5m{grafana_slo_uuid=\"slocreateemployee\"}",
+          "instant": true,
+          "refId": "A"
+        }
+      },
+      {
+        "refId": "B",
+        "queryType": "",
+        "relativeTimeRange": { "from": 600, "to": 0 },
+        "datasourceUid": "grafanacloud-prom",
+        "model": {
+          "expr": "1 - grafana_slo_sli_1h{grafana_slo_uuid=\"slocreateemployee\"}",
+          "instant": true,
+          "refId": "B"
+        }
+      },
+      {
+        "refId": "C",
+        "datasourceUid": "__expr__",
+        "model": {
+          "type": "math",
+          "expression": "$A > 0.0144 && $B > 0.0144",
+          "refId": "C"
+        }
+      }
+    ],
+    "intervalSeconds": 60,
+    "for": "2m",
+    "labels": {
+      "severity": "critical",
+      "team": "mysql-react-app-demo",
+      "journey": "create-employee",
+      "burn_rate": "fast"
+    },
+    "annotations": {
+      "summary": "Create Employee SLO fast burn — error budget depleting rapidly",
+      "description": "The Create Employee journey is burning error budget at 14.4x the allowed rate. 2% of the 28-day budget will be exhausted in 1 hour."
+    },
+    "folderUID": "b1ecdba7-e861-42b1-9180-3ecb646ee76c",
+    "ruleGroup": "mysql-react-slo-alerts",
+    "noDataState": "OK",
+    "execErrState": "Error",
+    "isPaused": false
+  },
+  {
+    "title": "Create Employee — Slow Burn",
+    "condition": "C",
+    "data": [
+      {
+        "refId": "A",
+        "queryType": "",
+        "relativeTimeRange": { "from": 3600, "to": 0 },
+        "datasourceUid": "grafanacloud-prom",
+        "model": {
+          "expr": "1 - grafana_slo_sli_30m{grafana_slo_uuid=\"slocreateemployee\"}",
+          "instant": true,
+          "refId": "A"
+        }
+      },
+      {
+        "refId": "B",
+        "queryType": "",
+        "relativeTimeRange": { "from": 3600, "to": 0 },
+        "datasourceUid": "grafanacloud-prom",
+        "model": {
+          "expr": "1 - grafana_slo_sli_6h{grafana_slo_uuid=\"slocreateemployee\"}",
+          "instant": true,
+          "refId": "B"
+        }
+      },
+      {
+        "refId": "C",
+        "datasourceUid": "__expr__",
+        "model": {
+          "type": "math",
+          "expression": "$A > 0.006 && $B > 0.006",
+          "refId": "C"
+        }
+      }
+    ],
+    "intervalSeconds": 60,
+    "for": "60m",
+    "labels": {
+      "severity": "warning",
+      "team": "mysql-react-app-demo",
+      "journey": "create-employee",
+      "burn_rate": "slow"
+    },
+    "annotations": {
+      "summary": "Create Employee SLO slow burn — error budget depleting",
+      "description": "The Create Employee journey has a sustained elevated error rate at 6x the allowed burn rate."
+    },
+    "folderUID": "b1ecdba7-e861-42b1-9180-3ecb646ee76c",
+    "ruleGroup": "mysql-react-slo-alerts",
+    "noDataState": "OK",
+    "execErrState": "Error",
+    "isPaused": false
+  }
+]

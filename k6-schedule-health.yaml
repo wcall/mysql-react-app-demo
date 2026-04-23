@@ -1,0 +1,7 @@
+# k6 Cloud schedule for health endpoint load test.
+# load-test-id: 1206086  schedule-id: 35873
+# Applied via: gcx k6 schedules create --load-test-id 1206086 -f k6-schedule-health.yaml
+starts: "2026-04-23T12:00:00Z"
+recurrence_rule:
+  frequency: HOURLY
+  interval: 6

@@ -1,0 +1,31 @@
+apiVersion: slo.ext.grafana.app/v1alpha1
+kind: SLO
+metadata:
+  name: slolistemployees
+spec:
+  name: "List Employees — Availability"
+  description: "99.9% of GET /api/employees requests succeed (non-5xx) over a 28-day window"
+  labels:
+    - key: team
+      value: mysql-react-app-demo
+    - key: journey
+      value: list-employees
+  destinationDatasource:
+    uid: grafanacloud-prom
+  objectives:
+    - value: 0.999
+      window: 28d
+  query:
+    type: freeform
+    freeform:
+      query: >
+        sum(rate(http_server_request_duration_seconds_count{
+          http_route="/api/employees",
+          http_request_method="GET",
+          http_response_status_code!~"5.."
+        }[$__rate_interval]))
+        /
+        sum(rate(http_server_request_duration_seconds_count{
+          http_route="/api/employees",
+          http_request_method="GET"
+        }[$__rate_interval]))

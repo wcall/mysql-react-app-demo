@@ -1,0 +1,27 @@
+# IMPORTANT: Replace TARGET_URL with a publicly reachable URL before deploying.
+# See check-health.yaml for instructions on using ngrok or similar tunneling.
+# Note: POST checks create data in your database. Consider using a dedicated test database.
+apiVersion: syntheticmonitoring.ext.grafana.app/v1alpha1
+kind: Check
+metadata:
+  name: create-company-http
+spec:
+  job: "mysql-react-app-create-company"
+  target: "TARGET_URL/api/companies"
+  frequency: 60000   # 60 seconds — write endpoint
+  timeout: 10000
+  enabled: true
+  basicMetricsOnly: false
+  alertSensitivity: medium
+  probes: []
+  settings:
+    http:
+      ipVersion: V4
+      method: POST
+      noFollowRedirects: false
+      validStatusCodes:
+        - 201
+      headers:
+        - name: Content-Type
+          value: application/json
+      body: '{"name":"synthetic-check-probe"}'

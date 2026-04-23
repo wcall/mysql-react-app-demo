@@ -1,0 +1,21 @@
+# IMPORTANT: Replace TARGET_URL with a publicly reachable URL before deploying.
+# See check-health.yaml for instructions on using ngrok or similar tunneling.
+apiVersion: syntheticmonitoring.ext.grafana.app/v1alpha1
+kind: Check
+metadata:
+  name: companies-http
+spec:
+  job: "mysql-react-app-companies"
+  target: "TARGET_URL/api/companies"
+  frequency: 60000   # 60 seconds — standard endpoint
+  timeout: 10000
+  enabled: true
+  basicMetricsOnly: false
+  alertSensitivity: medium
+  probes: []
+  settings:
+    http:
+      ipVersion: V4
+      noFollowRedirects: false
+      validStatusCodes:
+        - 200

@@ -1,0 +1,9 @@
+{
+  "name": "mysql-react-app-irm",
+  "type": "webhook",
+  "settings": {
+    "url": "https://oncall-prod-us-central-0.grafana.net/oncall/integrations/v1/alertmanager/aPnTr127kYXFXPfIuPas4wWh8/",
+    "httpMethod": "POST"
+  },
+  "disableResolveMessage": false
+}

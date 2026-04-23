@@ -1,0 +1,61 @@
+{
+  "group_by": [
+    "grafana_folder",
+    "alertname"
+  ],
+  "receiver": "grafana-default-email",
+  "routes": [
+    {
+      "continue": true,
+      "receiver": "Grafana Alerting \ud83d\udc7b"
+    },
+    {
+      "mute_time_intervals": [
+        "Mute2025_2-7AMPDT",
+        "Mute8-12PMDaily"
+      ],
+      "object_matchers": [
+        [
+          "team",
+          "=",
+          "wcall"
+        ]
+      ],
+      "receiver": "Grafana Alerting \ud83d\udc7b"
+    },
+    {
+      "group_by": [
+        "alertname",
+        "journey",
+        "service"
+      ],
+      "mute_time_intervals": [
+        "pov-sim-maintenance"
+      ],
+      "object_matchers": [
+        [
+          "app",
+          "=",
+          "pov-sim"
+        ]
+      ],
+      "receiver": "pov-sim-irm"
+    },
+    {
+      "group_by": [
+        "alertname",
+        "journey",
+        "team"
+      ],
+      "object_matchers": [
+        [
+          "team",
+          "=",
+          "mysql-react-app-demo"
+        ]
+      ],
+      "receiver": "mysql-react-app-irm",
+      "continue": false
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+apiVersion: k6.ext.grafana.app/v1alpha1
+kind: Project
+spec:
+  name: mysql-react-app-demo
