@@ -2,6 +2,9 @@
 
 A full-stack demo app running MySQL 8, a Node.js/Express backend, and a React frontend — all orchestrated with Docker Compose. Includes a k6 load test for generating realistic MySQL workloads.
 
+> **Go from zero to fully observable in one command.**
+> Use the `/gcx-observability` skill in [gcx](https://github.com/grafana/gcx), the Grafana Cloud CLI, to automatically wire up OpenTelemetry tracing, Prometheus metrics, Loki logs, Faro frontend RUM, synthetic checks, SLOs, and alert rules for this stack.
+
 ---
 
 ## Architecture
@@ -30,6 +33,8 @@ graph TD
     end
 ```
 
+
+
 ---
 
 ## Prerequisites
@@ -46,22 +51,26 @@ The `.env` file lives in the **parent directory** (`mysql-react-app-demo/`), not
 
 ```bash
 cd mysql-react-app-demo   # project root
-cat > .env <<'EOF'
-# MySQL
-MYSQL_ROOT_PASSWORD=rootpass
-MYSQL_DATABASE=super_awesome_application
-MYSQL_USER=appuser
-MYSQL_PASSWORD=appuserpass
-
-# k6 load test (only needed if running the load-test profile)
-K6_CLOUD_TOKEN=
-K6_CLOUD_PROJECT_ID=
-K6_CLOUD_STACK_ID=
-K6_MYSQL_DATABASE=super_awesome_application
-K6_MYSQL_USER=k6user
-K6_MYSQL_PASSWORD=k6userpass
-EOF
+cp .env.example .env
 ```
+
+Then fill in the values for your environment. Key variables:
+
+
+| Variable                              | Description                                                                  |
+| ------------------------------------- | ---------------------------------------------------------------------------- |
+| `MYSQL_ROOT_PASSWORD`                 | MySQL root password                                                          |
+| `MYSQL_DATABASE`                      | Database name                                                                |
+| `MYSQL_USER` / `MYSQL_PASSWORD`       | App DB user credentials                                                      |
+| `GRAFANA_CLOUD_API_KEY`               | Cloud Access Policy token with `metrics:write`, `logs:write`, `traces:write` |
+| `GCLOUD_PROMETHEUS_URL` / `_USERNAME` | Hosted Prometheus remote write URL and instance ID                           |
+| `GCLOUD_LOKI_URL` / `_USERNAME`       | Hosted Loki push URL and instance ID                                         |
+| `GCLOUD_TEMPO_ENDPOINT` / `_USERNAME` | Tempo OTLP endpoint (`host:port`) and instance ID                            |
+| `VITE_FARO_APP_KEY`                   | Faro app key (Grafana Cloud → Frontend → Apps)                               |
+| `VITE_FARO_ENDPOINT`                  | Faro collector URL                                                           |
+
+
+> Grafana Cloud credentials: **Connections → Hosted Prometheus / Loki / Tempo → Details**. Use one token for all three write scopes.
 
 ### 2. Start the stack
 
@@ -82,27 +91,31 @@ docker compose --env-file ../.env ps
 
 ## Access Points
 
-| Service     | URL                        | Notes                          |
-|-------------|----------------------------|--------------------------------|
-| Frontend    | http://localhost:3000      | React app — insert/query data  |
-| Backend API | http://localhost:3001/api  | Express REST API               |
-| phpMyAdmin  | http://localhost:8080      | MySQL web UI (login: root)     |
-| MySQL       | localhost:3306             | Direct DB access               |
+
+| Service     | URL                                                    | Notes                         |
+| ----------- | ------------------------------------------------------ | ----------------------------- |
+| Frontend    | [http://localhost:3000](http://localhost:3000)         | React app — insert/query data |
+| Backend API | [http://localhost:3001/api](http://localhost:3001/api) | Express REST API              |
+| phpMyAdmin  | [http://localhost:8080](http://localhost:8080)         | MySQL web UI (login: root)    |
+| MySQL       | localhost:3306                                         | Direct DB access              |
+
 
 ---
 
 ## API Endpoints
 
-| Method | Path                      | Description                     |
-|--------|---------------------------|---------------------------------|
-| GET    | `/api/health`             | Health check                    |
-| GET    | `/api/companies`          | List all companies              |
-| POST   | `/api/companies`          | Create company `{ name }`       |
-| DELETE | `/api/companies/:id`      | Delete company by ID            |
-| GET    | `/api/employees`          | List all employees              |
-| GET    | `/api/employees/with-company` | Employees with company name |
-| POST   | `/api/employees`          | Create employee `{ name, company_id, salary }` |
-| DELETE | `/api/employees/:id`      | Delete employee by ID           |
+
+| Method | Path                          | Description                                    |
+| ------ | ----------------------------- | ---------------------------------------------- |
+| GET    | `/api/health`                 | Health check                                   |
+| GET    | `/api/companies`              | List all companies                             |
+| POST   | `/api/companies`              | Create company `{ name }`                      |
+| DELETE | `/api/companies/:id`          | Delete company by ID                           |
+| GET    | `/api/employees`              | List all employees                             |
+| GET    | `/api/employees/with-company` | Employees with company name                    |
+| POST   | `/api/employees`              | Create employee `{ name, company_id, salary }` |
+| DELETE | `/api/employees/:id`          | Delete employee by ID                          |
+
 
 ---
 
@@ -116,6 +129,7 @@ docker compose --env-file ../.env run --rm k6
 ```
 
 The script (`scripts/mysql-loadgen-with-gck6.js`) runs a 1-hour test with:
+
 - **60%** SELECT queries (simple, JOIN, aggregation, subquery patterns)
 - **15%** INSERT, **15%** UPDATE, **10%** DELETE
 - VUs ramping from 10 → 50 → 10
@@ -158,9 +172,88 @@ mysql-react-app-demo/
 
 ---
 
+## Observability with gcx
+
+[gcx](https://github.com/grafana/gcx) is the Grafana Cloud CLI. It automates observability setup end-to-end — SLOs, synthetic checks, k6 load tests, alerting, IRM, and dashboards — using the `/gcx-observability` skill inside Claude Code.
+
+### 1. Install gcx
+
+Refer to the [gcx installation instructions](https://github.com/grafana/gcx) for your OS, then verify:
+
+```bash
+gcx --version
+```
+
+### 2. Configure a context
+
+Refer to the [gcx quick start](https://github.com/grafana/gcx) for full instructions. If you're using Claude Code, the `/setup-gcx` skill walks you through it interactively:
+
+```
+/setup-gcx
+```
+
+This creates a `my-grafana` context pointing at your Grafana Cloud stack.
+
+### 3. Verify your configuration
+
+```bash
+gcx config list-contexts
+gcx config use-context my-grafana
+gcx config check
+gcx config view
+gcx config current-context
+```
+
+### 4. Authenticate
+
+```bash
+gcx auth login --context my-grafana
+```
+
+### 5. Install the gcx plugin for Claude Code
+
+The following steps require [Claude Code](https://github.com/anthropics/claude-code).
+
+Add the gcx marketplace plugin, then install the gcx skill pack:
+
+```
+/plugin marketplace add grafana/gcx
+```
+
+```
+/plugin install gcx@gcx-marketplace
+```
+
+### 6. Explore available skills
+
+Ask Claude Code what skills are available from gcx:
+
+```
+What skills do I have installed from gcx?
+```
+
+To see the observability setup phases:
+
+```
+What are the phases in /gcx-observability?
+```
+
+### 7. Run the observability skill
+
+From the `mysql/` directory of this project, tell Claude Code:
+
+```
+Run /gcx-observability phases 0-7.
+```
+
+This runs Phases 0–7: bootstrap, discovery, test definitions, instrumentation, SLO-based alerting, synthetic monitoring, k6 load testing, and IRM setup.
+
+---
+
 ## Troubleshooting
 
 **Services not starting** — check logs:
+
 ```bash
 docker compose --env-file ../.env logs -f
 ```
@@ -170,7 +263,11 @@ docker compose --env-file ../.env logs -f
 **phpMyAdmin login** — use host `mysql`, username `root`, password from `MYSQL_ROOT_PASSWORD`.
 
 **Reset everything**:
+
 ```bash
 docker compose --env-file ../.env down -v
 docker compose --env-file ../.env up -d
+# or build with --no-cache
+docker compose --env-file ../.env build --no-cache && docker compose --env-file ../.env up
 ```
+
