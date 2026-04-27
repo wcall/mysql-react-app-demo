@@ -45,12 +45,18 @@ graph TD
 
 ## Setup
 
-### 1. Create the `.env` file
+### 1. Clone the repository
+
+```bash
+git clone git@github.com:wcall/mysql-react-app-demo.git
+cd mysql-react-app-demo
+```
+
+### 2. Create the `.env` file
 
 The `.env` file lives in the **parent directory** (`mysql-react-app-demo/`), not inside `mysql/`.
 
 ```bash
-cd mysql-react-app-demo   # project root
 cp .env.example .env
 ```
 
@@ -72,7 +78,7 @@ Then fill in the values for your environment. Key variables:
 
 > Grafana Cloud credentials: **Connections → Hosted Prometheus / Loki / Tempo → Details**. Use one token for all three write scopes.
 
-### 2. Start the stack
+### 3. Start the stack
 
 ```bash
 cd mysql
@@ -81,7 +87,7 @@ docker compose --env-file ../.env up -d
 
 This starts four services: `mysql`, `phpmyadmin`, `backend`, and `frontend`.
 
-### 3. Verify everything is running
+### 4. Verify everything is running
 
 ```bash
 docker compose --env-file ../.env ps
